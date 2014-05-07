@@ -722,7 +722,11 @@ def createDepTarball():
 
 def createWar():
   warDir = (os.path.join(buildRoot, "build", "vnu", "war"))
-  removeIfDirExists(warDir)
+  removeIfDirExists(warDir)   # Remove any old temporary war building files
+  # Make sure the parent directory exists (since createDist may not have been run before)
+  vnuDir = (os.path.join(buildRoot, "build", "vnu"))
+  if not os.path.isdir(vnuDir):
+    os.mkdir(vnuDir)
   os.mkdir(warDir)
   antRoot = os.path.join(buildRoot, "jing-trang", "lib")
   antJar= os.path.join(antRoot, "ant.jar")
