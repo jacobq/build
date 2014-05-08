@@ -995,7 +995,7 @@ def printHelp():
   print "Tasks:"
   print "  checkout -- Checks out the sources"
   print "  dldeps   -- Downloads missing dependency libraries and entities"
-  print "  dltests  -- Downloads the external test suite if missing"
+#  print "  dltests  -- Downloads the external test suite if missing"
   print "  build    -- Build the source"
   print "  test     -- Run tests"
   print "  run      -- Run the system"
