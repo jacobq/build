@@ -685,7 +685,14 @@ def createDist():
   classPath = os.pathsep.join([antJar, antLauncherJar])
   runCmd('"%s" -cp %s org.apache.tools.ant.Main -f %s'
     % (javaCmd, classPath, os.path.join(buildRoot, "build", "build.xml")))
-  version = subprocess.check_output([javaCmd, "-jar", os.path.join(distDir, "vnu.jar"), "--version"]).rstrip()
+  # If subprocess.check_output is not available, fall back to subprocess.Popen
+  # (i.e. for Python versions >= 2.4 but older than 2.7)
+  vnuVersionCommand = [javaCmd, "-jar", os.path.join(distDir, "vnu.jar"), "--version"];
+  if hasattr(subprocess, 'check_output'):
+    version = subprocess.check_output(vnuVersionCommand)
+  else:
+    version = subprocess.Popen(vnuVersionCommand, stdout=subprocess.PIPE).communicate()[0]
+  version = version.rstrip()
   readmeHtml = "https://raw.github.com/validator/validator.github.io/master/index.html"
   readmeMarkdown = "https://raw.github.com/validator/validator.github.io/master/README.md"
   fetchUrlTo(readmeHtml, os.path.join(distDir, "index.html"))
